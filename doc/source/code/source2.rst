@@ -16,7 +16,20 @@ Rectangle Example
 >>> get_quadrilateral_type(1.0, 2.0, 1.0, 2.0)
 'rectangle'
 
+Square Test
+^^^^^^^^^^^
 
+.. testsetup:: *
+
+    from source.source2 import get_quadrilateral_type
+
+.. testcode:: "square" quadrilateral type
+
+    get_quadrilateral_type(1.0, 1.0, 1.0, 1.0)
+
+.. testoutput::
+
+    "square"
 
 Module Reference
 ^^^^^^^^^^^^^^^^
