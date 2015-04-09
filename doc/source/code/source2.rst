@@ -13,7 +13,7 @@ Rectangle Example
 ^^^^^^^^^^^^^^^^^
 
 >>> from source.source2 import get_quadrilateral_type
->>> get_triangle_type(1.0, 2.0, 1.0, 2.0)
+>>> get_quadrilateral_type(1.0, 2.0, 1.0, 2.0)
 'rectangle'
 
 
