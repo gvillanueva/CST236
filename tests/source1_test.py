@@ -41,3 +41,7 @@ class TestGetTriangleType(TestCase):
     def test_get_triangle_equilateral_a_is_dict(self):
         result = get_triangle_type({0: 1, 1: 1, 2: 1})
         self.assertEqual(result, 'equilateral')
+
+    def test_get_triangle_equilateral_a_is_tuple(self):
+        result = get_triangle_type([1, 1, 1])
+        self.assertEqual(result, 'equilateral')
