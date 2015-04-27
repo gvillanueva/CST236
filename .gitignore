@@ -1,3 +1,5 @@
 *.exe
 *.pyc
 .idea/
+.coverage
+htmlcov/
