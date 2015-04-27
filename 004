@@ -1,0 +1,15 @@
+ISSUE Number:   004
+BRIEF:          pyTona answering questions with less than 90% match
+
+Steps to reproduce:
+1. Create a pyTona.main.Interface object.
+2. Call the object's ask method with "Why don't you understand>" as the question param.
+
+Comments:
+According to requirement #0006, a question's keywords must match a known question with a minimum of 90% matching. I
+tested this using 4/5 words (80%) from initial question #4.
+
+OUTCOME: "Because you do not speak 1s and 0s"
+EXPECTED: "I don't know, please provide the answer"
+
+Related: 006

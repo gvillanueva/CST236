@@ -1,0 +1,10 @@
+ISSUE Number:   001
+BRIEF:          Valid question without valid match should return 'I don't know, please provide the answer'
+
+Steps to reproduce:
+1. Create a pyTona.main.Interface object.
+2. Call the object's ask method passing 'How do you feel?' for the question param.
+
+Comments:
+OUTCOME: 'Was that a question?'
+EXPECTED: 'I don't know, please provide the answer'

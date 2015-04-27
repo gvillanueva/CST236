@@ -1,0 +1,10 @@
+ISSUE Number:   002
+BRIEF:          pyTona throws exception when input is not a string
+
+Steps to reproduce:
+1. Create a pyTona.main.Interface object.
+2. Call the object's ask method with 1234 as the question param.
+
+Comments:
+According to the code, since the input is not a string, an exception is thrown. However, this behavior is not by any of
+the requirements.

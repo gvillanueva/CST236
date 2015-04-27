@@ -1,0 +1,12 @@
+ISSUE Number:   005
+BRIEF:          Initial answer 1 not appending "miles" to return value
+
+Steps to reproduce:
+1. Create a pyTona.main.Interface object.
+2. Call the object's ask method with "What is 1284.5 feet in miles>" as the question param.
+
+Comments:
+According to requirement #0017, "miles" should be appended to the end of the return. It wasn't.
+
+OUTCOME: "0.243276515152"
+EXPECTED: "0.243276515152miles"
