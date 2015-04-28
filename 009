@@ -1,0 +1,14 @@
+ISSUE Number:   009
+BRIEF:          pyTona.main.Interface.correct accepts numeric input
+
+Steps to reproduce:
+1. Create a pyTona.main.Interface object.
+2. Call the object's ask method passing 'What year was Mozart born>' for the question param.
+3. Call the object's teach method passing '1752' as the answer param.
+4. Call the object's correct method pass 1756 as the answer param.
+5. Call the object's ask method again, passing 'What year was Mozart born>' for the question param.
+
+Comments:
+OUTCOME: 1756
+EXPECTED: No answer, but the exact behavior is undefined. However, #0015 states that the only accepted input shall be
+strings or functions.
