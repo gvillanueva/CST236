@@ -201,3 +201,18 @@ implementation of this matches on a smaller unit, however; possibly on a per-cha
 | | EXPECTED: No answer, but the exact behavior is undefined. However, #0015 states that the only accepted input shall be                                                                                                                                                                                                                                                             |
 | | strings or functions.                                                                                                                                                                                                                                                                                                                                                             |
 +-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+Time Spent
+----------
+
+1. Why are requirements tracing so important?
+
+Requirements testing is obviously important.  That's the whole activity of the lab.  However, without requirements
+tracing, your testing is without measurable value.  You can't say how much has been covered, nor which requirements have
+been tested.  If you spent all your effort testing low priority requirements, for instance, then testing has been
+virtually worthless.  The high priority requirements may be bug-ridden, and the perceived quality of software low.
+Without requirements tracing, you can't really estimate the quality of your software.
+
+2. How long did it take to complete this lab?
+
+I think it took me probably 7 hours or so, but I didn't keep a close track.
