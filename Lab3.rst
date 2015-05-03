@@ -2,6 +2,7 @@ Lab 3 Write-up
 ==============
 
 1. What are five examples of other testing(nose2) plugins that might be useful?
+
 * A plugin that chooses which tests to run.
 * A plugin to run tests in parallel using multi-processing.
 * A module-specialized plugin to simplify mocking.
@@ -9,20 +10,24 @@ Lab 3 Write-up
 * A plugin to email test results to developers.
 
 2. Do you plan to create any of these plugins for your term project?
+
 A plugin to choose which tests seems obvious.  Rather than running the full length of all your tests, you may only be
 concerned with testing the current module under development.  Running just the tests for the code could say you time
 spent waiting for test results from unrelated code.  There may be some missed integration level bugs in doing so, but
 the trade-off is acceptable, since these bugs will be caught during a full run later.
 
 3. What is the hardest part of this lab?
+
 The requirements took a while to test, but the task was straightforward.  Writing the nose2 plugin was the most
 difficult.  This is probably again due to my lack of experience with python, compounded with needing to learn the rules
 for writing a nose2 plugin.
 
 4. Did the code fully and completely implement the requirements? Explain
+
 The code had some mistakes in it, but for the most part it implemented the requirements.
 
 5. Was the requirements complete? Explain
+
 The requirements were fairly complete, but they were not thorough.  There is some ambiguity in the requirements.  For
 instance, #0006 states that "The system shall determine an answer to a question as a correct if the keywords provide a
 90% match and return the answer".  However, my initial test was to treat each keyword as a unit of that test.  That is,
