@@ -10,6 +10,7 @@ from mock import Mock, patch, MagicMock
 import socket
 from pyTona.answer_funcs import seq_finder, FibSeqFinder
 import random
+import os
 
 def inchesToMillimetersWrong(inches):
     return inches * 4.52
@@ -209,12 +210,6 @@ class TestAcceptableAnswers(TestCase):
         answer = self.qa.ask('What is the 1 digit of the Fibonacci sequence?')
         self.assertEqual(1, answer)
 
-    @requirements(['#0028'])
-    def test_ask_initialAnswer8_askForALaterIndex_wait5Secs(self):
-        answer = self.qa.ask('What is the 4 digit of the Fibonacci sequence?')
-        sleepytime.sleep(5)
-        self.assertEqual(3, answer)
-
     @requirements(['#0029'])
     @patch('random.randint')
     def test_ask_initialAnswer8_Thinking(self, mockRandint):
@@ -225,7 +220,7 @@ class TestAcceptableAnswers(TestCase):
     @requirements(['#0029'])
     @patch('random.randint')
     def test_ask_initialAnswer8_OneSecond(self, mockRandint):
-        mockRandint.return_value = 2
+        mockRandint.return_value = 1
         answer = self.qa.ask('What is the 200 digit of the Fibonacci sequence?')
         self.assertEqual('One second', answer)
 
@@ -235,6 +230,54 @@ class TestAcceptableAnswers(TestCase):
         mockRandint.return_value = 0
         answer = self.qa.ask('What is the 200 digit of the Fibonacci sequence?')
         self.assertEqual('cool your jets', answer)
+
+    @requirements(['#0008', '#0018'])
+    def test_ask_validQuestion_initialAnswer2(self):
+        answer = self.qa.ask('How many seconds since 12?')
+        result = datetime.now() - datetime.combine(date.today(), time(12))
+        self.assertEqual(result.seconds, answer)
+
+    @requirements(['#0030'])
+    def test_ask_invalidQuestion_notAString(self):
+        self.assertRaises(Exception, self.qa.ask, 1233)
+
+    @requirements(['#0031'])
+    def test_ask_invalidQuestion_tooManyExtraParams(self):
+        self.assertRaises(Exception, self.qa.ask, 'Why don\'t 21 you shutdown?')
+
+    @requirements(['#0022'])
+    def test_ask_whereAmI_notInAGitRepo(self):
+        cwd = os.getcwd()
+        os.chdir('..')
+        answer = self.qa.ask('Where am I?')
+        self.assertEqual('Unknown', answer)
+        os.chdir(cwd)
+
+    @requirements(['#0023'])
+    def test_ask_whereAreYou_notInAGitRepo(self):
+        cwd = os.getcwd()
+        os.chdir('..')
+        answer = self.qa.ask('Where are you?')
+        self.assertEqual('Unknown', answer)
+        os.chdir(cwd)
+
+    class mockProcess():
+        def communicate(self):
+            return [None]
+
+    @requirements(['#0022'])
+    @patch('subprocess.Popen')
+    def test_ask_whereAmI_outputIsNone(self, mockObj):
+        mockObj.return_value = self.mockProcess()
+        answer = self.qa.ask('Where am I?')
+        self.assertEqual('Unknown', answer)
+
+    @requirements(['#0023'])
+    @patch('subprocess.Popen')
+    def test_ask_whereAreYou_outputIsNone(self, mockObj):
+        mockObj.return_value = self.mockProcess()
+        answer = self.qa.ask('Where are you?')
+        self.assertEqual('Unknown', answer)
 
     def tearDown(self):
         if isinstance(pyTona.answer_funcs.seq_finder, FibSeqFinder):
