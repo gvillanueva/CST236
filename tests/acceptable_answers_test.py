@@ -1,8 +1,15 @@
 from pyTona.main import Interface
+import pyTona.answer_funcs
 from ReqTracer import requirements
 from unittest import TestCase
+from subprocess import Popen, PIPE
 import getpass
 from datetime import datetime, date, time
+import time as sleepytime
+from mock import Mock, patch, MagicMock
+import socket
+from pyTona.answer_funcs import seq_finder, FibSeqFinder
+import random
 
 def inchesToMillimetersWrong(inches):
     return inches * 4.52
@@ -141,3 +148,94 @@ class TestAcceptableAnswers(TestCase):
     def test_ask_validQuestion_initialAnswer4(self):
         answer = self.qa.ask('Why don\'t you shutdown?')
         self.assertEqual('I\'m afraid I can\'t do that {0}'.format(getpass.getuser()), answer)
+
+    @requirements(['#0022'])
+    def test_ask_validQuestion_initialAnswer5(self):
+        pyTona.answer_funcs.get_git_branch = Mock(return_value='lab4')
+        answer = self.qa.ask('Where am I?')
+        self.assertEqual('lab4', answer)
+
+    @requirements(['#0023'])
+    def test_ask_validQuestion_initialAnswer6(self):
+        pyTona.answer_funcs.get_git_url = Mock(return_value='http://github.com/gvillanueva/CST236')
+        answer = self.qa.ask('Where are you?')
+        self.assertEqual('http://github.com/gvillanueva/CST236', answer)
+
+    class mockSocket():
+        def __init__(self):
+            self.ip = None
+            self.port = None
+            self.message = None
+        def connect(self, (ip, port)):
+            self.ip = ip
+            self.port = port
+        def send(self, message):
+            self.message = message
+        def recv(self, a):
+            return 'Huey$Dewey$Louie'
+        def close(self):
+            pass
+
+    class mockSocketNoReponse(mockSocket):
+        def recv(self, a):
+            return None
+
+    @requirements(['#0024', '#0026'])
+    @patch('socket.socket')
+    def test_ask_validQuestion_initialAnswer7(self, patchedSocket):
+        patchedSocket.return_value = self.mockSocket()
+        answer = self.qa.ask('Who else is here?')
+        self.assertListEqual(['Huey', 'Dewey', 'Louie'], answer)
+
+    @requirements(['#0025'])
+    @patch('socket.socket')
+    def test_ask_initialAnswer7_connectionInfoAndMessageReqs(self, patchedSocket):
+        mockObj = self.mockSocket()
+        patchedSocket.return_value = mockObj
+        answer = self.qa.ask('Who else is here?')
+        self.assertEqual('192.168.64.3', mockObj.ip)
+        self.assertEqual('1337', mockObj.port)
+        self.assertEqual('Who?', mockObj.message)
+
+    @requirements(['#0027'])
+    @patch('socket.socket')
+    def test_ask_initialAnswer7_noResponse(self, patchedSocket):
+        patchedSocket.return_value = self.mockSocketNoReponse()
+        answer = self.qa.ask('Who else is here?')
+        self.assertEqual('IT\'S A TRAAAPPPP', answer)
+
+    @requirements(['#0028'])
+    def test_ask_initialAnswer8_immediateResponse(self):
+        answer = self.qa.ask('What is the 1 digit of the Fibonacci sequence?')
+        self.assertEqual(1, answer)
+
+    @requirements(['#0028'])
+    def test_ask_initialAnswer8_askForALaterIndex_wait5Secs(self):
+        answer = self.qa.ask('What is the 4 digit of the Fibonacci sequence?')
+        sleepytime.sleep(5)
+        self.assertEqual(3, answer)
+
+    @requirements(['#0029'])
+    @patch('random.randint')
+    def test_ask_initialAnswer8_Thinking(self, mockRandint):
+        mockRandint.return_value = 4
+        answer = self.qa.ask('What is the 200 digit of the Fibonacci sequence?')
+        self.assertEqual('Thinking...', answer)
+
+    @requirements(['#0029'])
+    @patch('random.randint')
+    def test_ask_initialAnswer8_OneSecond(self, mockRandint):
+        mockRandint.return_value = 2
+        answer = self.qa.ask('What is the 200 digit of the Fibonacci sequence?')
+        self.assertEqual('One second', answer)
+
+    @requirements(['#0029'])
+    @patch('random.randint')
+    def test_ask_initialAnswer8_CoolYourJets(self, mockRandint):
+        mockRandint.return_value = 0
+        answer = self.qa.ask('What is the 200 digit of the Fibonacci sequence?')
+        self.assertEqual('cool your jets', answer)
+
+    def tearDown(self):
+        if isinstance(pyTona.answer_funcs.seq_finder, FibSeqFinder):
+            pyTona.answer_funcs.seq_finder.stop()

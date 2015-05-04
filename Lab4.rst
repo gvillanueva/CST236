@@ -1,60 +1,26 @@
-Welcome to CST 236 Lab 4
-------------------------
+Lab 4 Write-up
+==============
 
-In this weeks lab you will be building confidence tables for the assignment from last week.
-You will need to have radon installed for some parts of the lab. If you haven't
-already done so execute "pip install radon".
+1. What observations did you make while performing the analysis on the system?
 
+The code is pretty solid due to low CC and MI values.
 
-Grading
-*******
+Stage 2 addressed almost all problems with the original code. It is debatable, but #0017 may still be exceding the requirements. It adds a space between the converted value and 'miles', though this is not called for in the requirements.
 
-+---------------------------------------+---------+
-| Proper testing of requirements        | 30 pts  |
-+---------------------------------------+---------+
-| Coding Style / Readability            | 10 pts  |
-+---------------------------------------+---------+
-| Analysis Questions                    | 30 pts  |
-+---------------------------------------+---------+
-| Proper requirements added for 100%    | 20 pts  |
-| coverage                              |         |
-+---------------------------------------+---------+
-| Drone.io passing                      | 10 pts  |
-+---------------------------------------+---------+
-| **Total**                             | 100 pts |
-+---------------------------------------+---------+
+Stage 2 also introduced a lot more pathways into the code that were not covered under my original tests.
 
-.. note::
+2. What are the advantages/disadvantages of performing this analysis?
 
-    If you design and implement data mutation into your tests you will receive 15 bonus points.
+Analyzing test results build confidence, be it positive or negative, in the code. Without regular assessment, a tester is just guessing at the integrity of the software. It also expresses direction of development, up or down, and can aide estimation, scheduling, and other project management tasks.
 
+3. What are the advantages of data mutation? Did you use any of these tools?
 
-Steps
-*****
+Data mutation helps ensure that your tests are capable of failure. Tests that cannot fail are worthless.  Data mutation changes the behavior of the function under test. If the FUT's behavior changes and your test still passes, this is a bad test. Your expected outcome is probably too broad, or you're not actually testing the function.
 
-#. First use the excel template provided on blackboard to perform analysis on the code/tests you created last week (mark as Stage 1)
-#. Now pull in my updated code and requirements from Lab4 branch on https://github.com/kimballj/cst236
-#. Execute tests and make necessary changes to fix them (Do not test new requirements just old ones)
-#. Perform analysis again (Mark as Stage 2). Hint: You will need to use your trace plugin for this
-#. Add tests for new requirements (> #0021)
-#. Perform analysis again (mark as Stage 3).
-#. Add requirements / tests to achieve 100% coverage (don't fix any bugs, just document them)
-#. Perform analysis one final time (mark as Final Stage)
+4. What did you use Mock for in this lab?
 
-Lab Writeup
-***********
+I used mock to fake the network server and traffic. Initially I used one class with fixed results for each call to _socketobject's methods. This tracks the ip, port, and message arguments to test requirement #0025. The class also returns a formatted string containing a list of users to test #0024/#0026. When I saw #0027, I simply subclassed my original mock class and altered the return value for recv to make it return None. 
 
-#. What observations did you make while performing the analysis on the system?
-#. What are the advantages/disadvantages of performing this analysis
-#. What are the advantages of data mutation? Did you use any of these tools?
-#. What did you use Mock for in this lab?
-#. How long did this lab take to complete?
+5. How long did this lab take to complete?
 
-Submission
-**********
-
-Submit excel spreadsheet through blackboard. Bug reports should be included in excel as a separate sheet.
-
-Include links to your git repo and drone.io in the comments. **I will not accept work that doesn't include these links.**
-
-Lab write ups can be RST or a separate page in excel document. **no other format for the write up will be accepted**
+About 5 hours. Mocking was a huge headache for me as I couldn't get it to behave. For a long time it seemed every member of the class I wanted to mock was itself a Mock instance. I couldn't assign to return_value and I ran in circles for a long time.
