@@ -102,3 +102,19 @@ class TestSecurity(TestCase):
         threat = Threat(priority=10)
         threatId = self.security.addThreat(threat)
         self.assertEqual(self.security.getPriority(threatId), 10)
+
+    # Tests that the threat count is 0 when no threats added
+    def test_threatCount_noThreats_returns0(self):
+        self.assertEqual(self.security.threatCount, 0)
+
+    # Tests that the treat count i 1 when one threat is added
+    def test_threatCount_oneThreat_returns1(self):
+        self.security.addThreat(Threat())
+        self.assertEqual(self.security.threatCount, 1)
+
+    # Tests that threats can be reset
+    def test_resetThreats_twoThreats_threatCountReturns0(self):
+        self.security.addThreat(Threat())
+        self.security.addThreat(Threat())
+        self.security.resetThreats()
+        self.assertEqual(self.security.threatCount, 0)

@@ -24,3 +24,17 @@ class TestInterface(TestCase):
     def test_acceptInput_QuestionMark_returnsInstructions(self):
         instructions = self.interface.acceptInput('?')
         self.assertEqual(instructions, '\'X\'- Quit alert system\n\'?\'- Show these instructions')
+
+    # Tests that random orcs can be added for demo purposes
+    def test_acceptInput_demo_randomOrcs(self):
+        random_orc = self.interface.acceptInput('demo_addorc')
+        random_orc2 = self.interface.acceptInput('demo_addorc')
+        self.assertNotEqual(random_orc.id, random_orc2.id)
+
+    # Tests that all threats can be wiped by the command 'ENTer the Trees'
+    def test_acceptIntput_ENT_wipeThreats(self):
+        random_orc = self.interface.acceptInput('demo_addorc')
+        random_orc2 = self.interface.acceptInput('demo_addorc')
+        self.assertNotEqual(random_orc.id, random_orc2.id) #A little sanity that the threats are created
+        remainingThreats = self.interface.acceptInput('ENTer the Trees')
+        self.assertEqual(remainingThreats, 0)

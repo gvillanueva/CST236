@@ -23,8 +23,14 @@ class TestThreat(TestCase):
         threat = Threat()
         self.assertEqual(threat.obj, None)
 
-    # Tests that a threat can be assigned an id
+    # Tests that a threat can be assigned an object
     def test_init_objSet_equalsObj(self):
         orc = Orc()
         threat = Threat(obj=orc)
         self.assertEqual(threat.obj, orc)
+
+    # Tests that two threats do not have the same id
+    def test_init_idSet_unique(self):
+        threat = Threat()
+        threat2 = Threat()
+        self.assertNotEqual(threat.id, threat2.id)

@@ -19,6 +19,7 @@ class Threat(object):
     def __init__(self, priority=0, obj=None):
         self.__priority = priority
         self.__obj = obj
+        self.__id = uuid.uuid4()
 
     """Returns the threat's priority value
     :param priority: The priority of the threat
@@ -35,3 +36,11 @@ class Threat(object):
     @property
     def obj(self):
         return self.__obj
+
+    """Returns the threat's id
+    :param id: The globally unique identifier of the threat
+    :type id: uuid
+    """
+    @property
+    def id(self):
+        return self.__id

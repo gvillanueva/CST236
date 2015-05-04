@@ -116,6 +116,19 @@ class Security(object):
     def containsThreat(self, threatId):
         return threatId in self.__threats
 
+    """Gets the number of threats being tracked.
+    :param threatCount: The number of threats being tracked.
+    :type threatCount: int
+    """
+    @property
+    def threatCount(self):
+        return len(self.__threats)
+
+    """Resets the threat dictionary
+    """
+    def resetThreats(self):
+        self.__threats = {}
+
     """Finds a threat's priority using its UUID
     :param threatId: A unique id indexing a threat
     :type threatId: uuid.UUID
