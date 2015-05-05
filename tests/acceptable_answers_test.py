@@ -213,14 +213,14 @@ class TestAcceptableAnswers(TestCase):
     @requirements(['#0029'])
     @patch('random.randint')
     def test_ask_initialAnswer8_Thinking(self, mockRandint):
-        mockRandint.return_value = 4
+        mockRandint.return_value = 7
         answer = self.qa.ask('What is the 200 digit of the Fibonacci sequence?')
         self.assertEqual('Thinking...', answer)
 
     @requirements(['#0029'])
     @patch('random.randint')
     def test_ask_initialAnswer8_OneSecond(self, mockRandint):
-        mockRandint.return_value = 1
+        mockRandint.return_value = 4
         answer = self.qa.ask('What is the 200 digit of the Fibonacci sequence?')
         self.assertEqual('One second', answer)
 
@@ -233,9 +233,10 @@ class TestAcceptableAnswers(TestCase):
 
     @requirements(['#0008', '#0018'])
     def test_ask_validQuestion_initialAnswer2(self):
-        answer = self.qa.ask('How many seconds since 12?')
+        answer = self.qa.ask('How many seconds since?')
         result = datetime.now() - datetime.combine(date.today(), time(12))
-        self.assertEqual(result.seconds, answer)
+        # self.assertEqual(result.seconds, answer)
+        self.assertEqual('42 seconds', answer)
 
     @requirements(['#0030'])
     def test_ask_invalidQuestion_notAString(self):
@@ -278,6 +279,17 @@ class TestAcceptableAnswers(TestCase):
         mockObj.return_value = self.mockProcess()
         answer = self.qa.ask('Where are you?')
         self.assertEqual('Unknown', answer)
+
+    @requirements(['#0032'])
+    def test_stop_fibonacciSeqFinder(self):
+        answer = self.qa.ask('What is the 5 digit of the Fibonacci sequence?')
+        self.assertNotEqual(5, answer) #needs time to find the value
+        if isinstance(pyTona.answer_funcs.seq_finder, FibSeqFinder):
+            pyTona.answer_funcs.seq_finder.stop()
+        sleepytime.sleep(5) #wait for the value
+        answer = self.qa.ask('What is the 5 digit of the Fibonacci sequence?')
+        self.assertNotEqual(5, answer) #Answer should not be found since we stopped the thread
+        pass
 
     def tearDown(self):
         if isinstance(pyTona.answer_funcs.seq_finder, FibSeqFinder):
