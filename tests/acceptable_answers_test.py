@@ -151,14 +151,16 @@ class TestAcceptableAnswers(TestCase):
         self.assertEqual('I\'m afraid I can\'t do that {0}'.format(getpass.getuser()), answer)
 
     @requirements(['#0022'])
-    def test_ask_validQuestion_initialAnswer5(self):
-        pyTona.answer_funcs.get_git_branch = Mock(return_value='lab4')
+    @patch('pyTona.answer_funcs.get_git_branch')
+    def test_ask_validQuestion_initialAnswer5(self, mockFunc):
+        mockFunc.return_value='lab4'
         answer = self.qa.ask('Where am I?')
         self.assertEqual('lab4', answer)
 
     @requirements(['#0023'])
-    def test_ask_validQuestion_initialAnswer6(self):
-        pyTona.answer_funcs.get_git_url = Mock(return_value='http://github.com/gvillanueva/CST236')
+    @patch('pyTona.answer_funcs.get_git_url')
+    def test_ask_validQuestion_initialAnswer6(self, mockFunc):
+        mockFunc.return_value = 'http://github.com/gvillanueva/CST236'
         answer = self.qa.ask('Where are you?')
         self.assertEqual('http://github.com/gvillanueva/CST236', answer)
 
