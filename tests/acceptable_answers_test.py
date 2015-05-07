@@ -2,7 +2,6 @@ from pyTona.main import Interface
 import pyTona.answer_funcs
 from ReqTracer import requirements
 from unittest import TestCase
-from subprocess import Popen, PIPE
 import getpass
 from datetime import datetime, date, time
 import time as sleepytime
@@ -150,19 +149,28 @@ class TestAcceptableAnswers(TestCase):
         answer = self.qa.ask('Why don\'t you shutdown?')
         self.assertEqual('I\'m afraid I can\'t do that {0}'.format(getpass.getuser()), answer)
 
+
+    class mockPopenGitBranch():
+        def communicate(self):
+            return ['test']
+
     @requirements(['#0022'])
-    @patch('pyTona.answer_funcs.get_git_branch')
-    def test_ask_validQuestion_initialAnswer5(self, mockFunc):
-        mockFunc.return_value='lab4'
-        answer = self.qa.ask('Where am I?')
-        self.assertEqual('lab4', answer)
+    def test_ask_validQuestion_initialAnswer5(self):
+        with patch('subprocess.Popen') as mockobj:
+            mockobj.return_value = self.mockPopenGitBranch()
+            answer = self.qa.ask('Where am I?')
+            self.assertEqual('test', answer)
+
+    class mockPopenGitUrl():
+        def communicate(self):
+            return ['test']
 
     @requirements(['#0023'])
-    @patch('pyTona.answer_funcs.get_git_url')
-    def test_ask_validQuestion_initialAnswer6(self, mockFunc):
-        mockFunc.return_value = 'http://github.com/gvillanueva/CST236'
-        answer = self.qa.ask('Where are you?')
-        self.assertEqual('http://github.com/gvillanueva/CST236', answer)
+    def test_ask_validQuestion_initialAnswer6(self):
+        with patch('subprocess.Popen') as mockobj:
+            mockobj.return_value = self.mockPopenGitUrl()
+            answer = self.qa.ask('Where are you?')
+            self.assertEqual('test', answer)
 
     class mockSocket():
         def __init__(self):
