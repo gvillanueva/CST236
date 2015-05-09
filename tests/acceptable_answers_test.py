@@ -205,7 +205,7 @@ class TestAcceptableAnswers(TestCase):
         patchedSocket.return_value = mockObj
         answer = self.qa.ask('Who else is here?')
         self.assertEqual('192.168.64.3', mockObj.ip)
-        self.assertEqual('1337', mockObj.port)
+        self.assertEqual(1337, mockObj.port)
         self.assertEqual('Who?', mockObj.message)
 
     @requirements(['#0027'])
@@ -223,14 +223,14 @@ class TestAcceptableAnswers(TestCase):
     @requirements(['#0029'])
     @patch('random.randint')
     def test_ask_initialAnswer8_Thinking(self, mockRandint):
-        mockRandint.return_value = 7
+        mockRandint.return_value = 6
         answer = self.qa.ask('What is the 200 digit of the Fibonacci sequence?')
         self.assertEqual('Thinking...', answer)
 
     @requirements(['#0029'])
     @patch('random.randint')
     def test_ask_initialAnswer8_OneSecond(self, mockRandint):
-        mockRandint.return_value = 4
+        mockRandint.return_value = 2
         answer = self.qa.ask('What is the 200 digit of the Fibonacci sequence?')
         self.assertEqual('One second', answer)
 
@@ -241,12 +241,12 @@ class TestAcceptableAnswers(TestCase):
         answer = self.qa.ask('What is the 200 digit of the Fibonacci sequence?')
         self.assertEqual('cool your jets', answer)
 
-    @requirements(['#0008', '#0018'])
-    def test_ask_validQuestion_initialAnswer2(self):
-        answer = self.qa.ask('How many seconds since?')
-        result = datetime.now() - datetime.combine(date.today(), time(12))
-        # self.assertEqual(result.seconds, answer)
-        self.assertEqual('42 seconds', answer)
+    # @requirements(['#0008', '#0018'])
+    # def test_ask_validQuestion_initialAnswer2(self):
+    #     answer = self.qa.ask('How many seconds since?')
+    #     result = datetime.now() - datetime.combine(date.today(), time(12))
+    #     # self.assertEqual(result.seconds, answer)
+    #     self.assertEqual('42 seconds', answer)
 
     @requirements(['#0030'])
     def test_ask_invalidQuestion_notAString(self):
