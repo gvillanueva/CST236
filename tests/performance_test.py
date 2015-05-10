@@ -2,7 +2,7 @@ from unittest import TestCase
 from ReqTracer import requirements
 from pyTona.main import Interface
 import pyTona.answer_funcs
-from pyTona.answer_funcs import FibSeqFinder
+from pyTona.answer_funcs import FibSeqFinder, WoodChuck
 from pyTona.question_answer import QA
 import random
 import string
@@ -64,10 +64,23 @@ class TestPerformance(TestCase):
         self.assertTrue(elapsed)
         self.assertLess(elapsed, 60)
 
-    def test_woodChuck(self):
+    @requirements(['#0035', '#0039'])
+    def test_woodChuck_busyChucking(self):
         answer = self.qa.ask('How much wood could a woodchuck chuck in 10 seconds?')
+        self.assertEqual(answer, 'Busy chucking')
+
+    @requirements(['#0035', '#0040'])
+    def test_woodChuck_10cords_in_10secs(self):
+        answer = self.qa.ask('How much wood could a woodchuck chuck in 10 seconds?')
+        while answer == 'Busy chucking':
+            answer = self.qa.ask('How much wood could a woodchuck chuck in 10 seconds?')
+        self.assertEqual(answer, 10)
 
     def tearDown(self):
         if isinstance(pyTona.answer_funcs.seq_finder, FibSeqFinder):
             pyTona.answer_funcs.seq_finder.stop()
             pyTona.answer_funcs.seq_finder = None
+
+        if isinstance(pyTona.answer_funcs.woodChuck, WoodChuck):
+            pyTona.answer_funcs.woodChuck.stop()
+            pyTona.answer_funcs.woodChuck = None

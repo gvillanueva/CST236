@@ -94,9 +94,9 @@ Username shall be determined by the name of the currently logged in user.
 
 #0039 The system shall respond "Busy chucking" while the woodchuck has not completed its requested woodchuck run.
 
-#0040 The system's woodchuck shall chuck wood at a rate of 1 cord per second.
+#0040 The system's woodchuck shall chuck wood at a rate of 1 cord per second, beginning with the first chuck.
 
-#0041 The system's woodchuck shall never grow tired (lest it be replaced), so the rate should be constant.
+#0041 The system's woodchuck shall never grow tired, so the rate should be constant.
 
 #0042 The system shall read the contents of data.txt at 10 characters per second.
 

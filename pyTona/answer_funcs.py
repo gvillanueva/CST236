@@ -6,6 +6,7 @@ import threading
 import time
 
 seq_finder = None
+woodChuck = None
 
 def feet_to_miles(feet):
     return "{0} miles".format(float(feet) / 5280)
@@ -92,19 +93,26 @@ class WoodChuck(threading.Thread):
         super(WoodChuck, self).__init__(*args, **kwargs)
         self.secs = secs
         self.chuckedCords = 0
-        self.__stopEvent = threading.Event()
+        self._stopEvent = threading.Event()
+        self.t = None
+
+    def stop(self, *args, **kwargs):
+        self._stopEvent.set()
+        if self.t is not None:
+            self.t.cancel()
 
     def run(self):
-        t = threading.Timer(10, self.__stopEvent.set())
-        t.start()
-        while not self.__stopEvent.isSet():
-            time.sleep(1)
+        self.t = threading.Timer(10.0, self.stop)
+        self.t.start()
+        while not self._stopEvent.isSet():
             self.chuckedCords += 1
+            time.sleep(1)
 
     def isDone(self):
-        return self.__stopEvent.isSet()
+        return self._stopEvent.isSet()
 
 def chuck_wood(secs):
+    secs = int(secs)
     global woodChuck
     if woodChuck is None:
         woodChuck = WoodChuck(secs)
@@ -114,3 +122,11 @@ def chuck_wood(secs):
         return woodChuck.chuckedCords
     else:
         return 'Busy chucking'
+
+def find_the_answer():
+    t = threading.Timer(7.5, the_answer)
+    t.start()
+    return None
+
+def the_answer():
+    return 42
