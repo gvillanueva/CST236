@@ -86,3 +86,31 @@ def get_fibonacci_seq(index):
             return "cool your jets"
     else:
         return seq_finder.sequence[index]
+
+class WoodChuck(threading.Thread):
+    def __init__(self, secs, *args, **kwargs):
+        super(WoodChuck, self).__init__(*args, **kwargs)
+        self.secs = secs
+        self.chuckedCords = 0
+        self.__stopEvent = threading.Event()
+
+    def run(self):
+        t = threading.Timer(10, self.__stopEvent.set())
+        t.start()
+        while not self.__stopEvent.isSet():
+            time.sleep(1)
+            self.chuckedCords += 1
+
+    def isDone(self):
+        return self.__stopEvent.isSet()
+
+def chuck_wood(secs):
+    global woodChuck
+    if woodChuck is None:
+        woodChuck = WoodChuck(secs)
+        woodChuck.start()
+
+    if woodChuck.isDone():
+        return woodChuck.chuckedCords
+    else:
+        return 'Busy chucking'

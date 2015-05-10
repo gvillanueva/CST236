@@ -218,6 +218,8 @@ class TestAcceptableAnswers(TestCase):
     @requirements(['#0028'])
     def test_ask_initialAnswer8_immediateResponse(self):
         answer = self.qa.ask('What is the 1 digit of the Fibonacci sequence?')
+        while answer in ['Thinking...', 'One second', 'cool your jets']:
+            answer = self.qa.ask('What is the 1000 digit of the Fibonacci sequence?')
         self.assertEqual(1, answer)
 
     @requirements(['#0029'])
@@ -248,11 +250,11 @@ class TestAcceptableAnswers(TestCase):
     #     # self.assertEqual(result.seconds, answer)
     #     self.assertEqual('42 seconds', answer)
 
-    @requirements(['#0030'])
+    # @requirements(['#0030'])
     def test_ask_invalidQuestion_notAString(self):
         self.assertRaises(Exception, self.qa.ask, 1233)
 
-    @requirements(['#0031'])
+    # @requirements(['#0031'])
     def test_ask_invalidQuestion_tooManyExtraParams(self):
         self.assertRaises(Exception, self.qa.ask, 'Why don\'t 21 you shutdown?')
 
@@ -290,7 +292,7 @@ class TestAcceptableAnswers(TestCase):
         answer = self.qa.ask('Where are you?')
         self.assertEqual('Unknown', answer)
 
-    @requirements(['#0032'])
+    # @requirements(['#0032'])
     def test_stop_fibonacciSeqFinder(self):
         answer = self.qa.ask('What is the 5 digit of the Fibonacci sequence?')
         self.assertNotEqual(5, answer) #needs time to find the value
@@ -299,8 +301,8 @@ class TestAcceptableAnswers(TestCase):
         sleepytime.sleep(5) #wait for the value
         answer = self.qa.ask('What is the 5 digit of the Fibonacci sequence?')
         self.assertNotEqual(5, answer) #Answer should not be found since we stopped the thread
-        pass
 
     def tearDown(self):
         if isinstance(pyTona.answer_funcs.seq_finder, FibSeqFinder):
             pyTona.answer_funcs.seq_finder.stop()
+            pyTona.answer_funcs.seq_finder = None

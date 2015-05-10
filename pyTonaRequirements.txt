@@ -79,3 +79,27 @@ Username shall be determined by the name of the currently logged in user.
 #0033 The system shall stop generating Fibonacci sequence numbers once it has identified the first 1,000 numbers
 
 #0034 The system shall generate the first 1,000 Fibonacci sequence numbers in under 60 seconds
+
+**New question 5/10/2015**
+
+#0035 The system shall respond to the question "How much wood could a woodchuck chuck in X seconds?" with results after the wood has been chucked
+
+#0036 The system shall respond to the question "What are the contents of data.txt?" with the contents on the local data.txt or "Unknown" if data.txt is missing
+
+#0037 The system shall respond to the question "What is the answer to the ultimate question of life, the universe, and everything?" with 42.
+
+#0038 The system shall respond to the question "What is "
+
+**New performance requirements 5/10/2015**
+
+#0039 The system shall respond "Busy chucking" while the woodchuck has not completed its requested woodchuck run.
+
+#0040 The system's woodchuck shall chuck wood at a rate of 1 cord per second.
+
+#0041 The system's woodchuck shall never grow tired (lest it be replaced), so the rate should be constant.
+
+#0042 The system shall read the contents of data.txt at 10 characters per second.
+
+#00   The system shall respond with None while considering the answer to #0037.
+
+#00   The system shall require 7.5 million microseconds to calculate the answer to #0037.
