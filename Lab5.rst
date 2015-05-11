@@ -18,7 +18,7 @@ Performance testing is a category of testing that measures performance.  Each pe
 
 3. What new bugs did you encounter with the new code?
 
-
+I found that on occassion the retrieval method took longer than 5ms.
 
 4. Did you mock anything to speed up performance testing? Do you see any issues with this?
 
@@ -26,11 +26,39 @@ No.  Aside from a few exceptions, mocking would seem to defeat the purpose of pe
 
 5. Generate at least 5 performance measurement value sets and graphs (these sets must be worthwhile)
 
+See file attached to lab submission.
+
 6. Explain Load Testing, stress testing, endurance testing, spike testing configuration testing and isolation testing. How did you implement each of these?
 
-Load testing
+Load testing: The ability for the system to perform under a given load (typical, minimum, maximum).  I tested this for my weather prediction question, which rejected additional prediction models once 4 were processing already.
+Stress testing: Similar to load testing, typically with respect to hardware.  I tested this with my read_data function, where I started 10 other processes to write to disk while attempting to read a data file and maintain 10 characters per second.
 Endurance testing: this is the ability for a system to perform as specified over time. I implemented this for my woodchuck test.  I included the requirement that my woodchuck would never tire. This means that it's wood chuck performance shall remain constant.  If it degrades over time, this would be a performance failure.
-
+Spike testing: The ability for the system to perform while certain conditions are spiking up and down. I didn't really see a good opportunity to implement this.
+Configuration testing: The ability for the system to perform when the configuration is not as expected.  I tested this in my read_data function, where it returns 'Unknown' if data.txt is missing.
+Isolation testing: The ability for components of the system to perform alone.  I ran into this manually when I was testing the Fibonacci sequence generator.  It required me to change my test procedure.
 
 7. How long did this lab take to accomplish?
+
+About 8 hours.  The trickiest part was coming up with new QA's to meet the requirements of the lab. 
+
++--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| | **Issue Number:** 1                                                                                                                                                                                                          |
++--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| | **Brief:**                                                                                                                                                                                                                   |
+| | Answer retrieval occassionally takes longer than 5ms                                                                                                                                                                         |
++--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| | **Steps to Reproduce:**                                                                                                                                                                                                      |
+| | 1. Create a pyTona.main.Interface object.                                                                                                                                                                                    |
+| | 2. Ask pyTona a new question.                                                                                                                                                                                                |
+| | 3. Teach pyTona a new answer.                                                                                                                                                                                                |
+| | 4. Get the current clock using time.clock().                                                                                                                                                                                 |
+| | 5. Ask pyTona the new question.                                                                                                                                                                                              |
+| | 6. Calculate elapsed = time.clock() - start                                                                                                                                                                                  |
++--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| | **Comments:**                                                                                                                                                                                                                |
+| | OUTCOME: On occasion, elapsed is greater than 5ms.                                                                                                                                                                           |
+| | EXPECTED: elapsed is always less than 5ms.                                                                                                                                                                                   |
+| | I wrote an additional test to determine whether retrieval was affected by an answer's position in the list of answers.  It does not appear to be a factor.                                                                   |
++--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
 

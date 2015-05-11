@@ -56,7 +56,7 @@ class TestReadDataPerformance(TestCase):
 
     @requirements(['#0040', '#0050'])
     def test_read_data_10CharsPerSec(self):
-        self.setUpDefaultData()
+        self.setUpBigRandomData()
         start = time.clock()
         answer = self.qa.ask('What are the contents of data.txt?')
         elapsed = time.clock() - start
