@@ -52,7 +52,7 @@ class TestPerformance(TestCase):
         self.qa.ask('What is 15221 feet in miles?')
         elapsed = time.clock() - start
         self.assertLess(elapsed, 0.005)
-        self.outputPerformanceNumber('test_answer_retrieval_speed', elapsed)
+        self.outputPerformanceNumber('test_firstAnswer_retrieval_speed', elapsed)
 
     @requirements(['#0032'])
     def test_answer_retrieval_speed(self):
