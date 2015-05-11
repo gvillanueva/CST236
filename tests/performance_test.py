@@ -102,7 +102,7 @@ class TestPerformance(TestCase):
         while answer == 'Busy chucking':
             answer = self.qa.ask('How much wood could a woodchuck chuck in 20 seconds?')
             elapsed = time.clock() - start
-            if elapsed % 5 == 0:
+            if elapsed > 0 and int(elapsed) % 5 == 0:
                 self.assertEqual(pyTona.answer_funcs.woodChuck.chuckedCords % 5, 0)
         self.assertEqual(answer, 20)
 
