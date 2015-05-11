@@ -4,6 +4,9 @@ from ReqTracer import requirements
 from pyTona.main import Interface
 import pyTona.answer_funcs
 import os
+import string
+import random
+import threading
 
 class TestReadDataPerformance(TestCase):
     def setUp(self):
@@ -12,6 +15,11 @@ class TestReadDataPerformance(TestCase):
     def setUpDefaultData(self):
         with open('data.txt', 'w') as f:
             f.write("How do you know so much about swallows?")
+
+    def setUpBigRandomData(self):
+        with open('data.txt', 'w') as f:
+            for i in xrange(1048576):
+                f.write(random.choice(string.lowercase))
 
     def deleteData(self):
         try:
@@ -52,6 +60,11 @@ class TestReadDataPerformance(TestCase):
         perSec = len(answer) / elapsed
         self.assertGreaterEqual(perSec, 10)
         self.outputPerformanceNumber('test_read_data_10CharsPerSec', perSec)
+
+    @requirements(['#0040', '#0050'])
+    def test_read_data_10CharsPerSec_underStress(self):
+        self.setUpBigRandomData()
+
 
     def tearDown(self):
         self.deleteData()

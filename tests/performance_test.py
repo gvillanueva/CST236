@@ -44,7 +44,6 @@ class TestPerformance(TestCase):
         start = time.clock()
         self.qa.teach(self.testA)
         elapsed = time.clock() - start
-        self.assertTrue(elapsed)
         self.assertLess(elapsed, 0.005)
 
     @requirements(['#0032'])
@@ -54,8 +53,8 @@ class TestPerformance(TestCase):
         start = time.clock()
         self.qa.ask(self.testQ)
         elapsed = time.clock() - start
-        self.assertTrue(elapsed)
         self.assertLess(elapsed, 0.005)
+        self.outputPerformanceNumber('test_answer_retrieval_speed', elapsed)
 
     @requirements(['#0033'])
     def test_stop_fibonacci_generation_after_1000(self):
@@ -74,6 +73,7 @@ class TestPerformance(TestCase):
         elapsed = time.clock() - start
         self.assertTrue(elapsed)
         self.assertLess(elapsed, 60)
+        self.outputPerformanceNumber('test_fibonacci_generation_first1000InLessThan60s', elapsed)
 
     @requirements(['#0035', '#0039'])
     def test_woodChuck_busyChucking(self):
@@ -98,12 +98,12 @@ class TestPerformance(TestCase):
                 self.assertEqual(pyTona.answer_funcs.woodChuck.chuckedCords % 5, 0)
         self.assertEqual(answer, 20)
 
-    @requirements([''])
+    @requirements(['#0036', '#0037'])
     def test_find_the_answer_returnsNone(self):
         answer = self.qa.ask('What is the answer to the ultimate question of life, the universe, and everything?')
         self.assertIsNone(answer)
 
-    @requirements([''])
+    @requirements(['#0036', '#0038'])
     def test_find_the_answer_wait7500000usecs(self):
         self.qa.ask('What is the answer to the ultimate question of life, the universe, and everything?')
         time.sleep(7.5)

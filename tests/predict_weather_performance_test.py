@@ -44,7 +44,6 @@ class TestPredictWeatherPerformance(TestCase):
         start = time.clock()
         pyTona.answer_funcs.predict_weather(2)
         elapsed = time.clock() - start
-        self.assertTrue(elapsed)
         self.assertLess(elapsed, 6)
 
     @requirements(['#0037', '#0047'])
