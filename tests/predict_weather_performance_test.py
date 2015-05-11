@@ -3,17 +3,36 @@ from unittest import TestCase
 from ReqTracer import requirements
 from pyTona.main import Interface
 import pyTona.answer_funcs
+import os
 
 class TestPredictWeatherPerformance(TestCase):
     def setUp(self):
         self.qa = Interface()
 
+    def outputPerformanceNumber(self, function, results):
+        if not os.path.exists('results'):
+            os.mkdir('results')
+
+        outFile = os.path.join('results', '{0}.csv'.format(function))
+        exists = os.path.isfile(outFile)
+        with open(outFile, 'a') as f:
+            if (exists):
+                f.write(',{0}'.format(results))
+            else:
+                f.write('{0}'.format(results))
+
     @requirements(['#0037', '#0038'])
     def test_predict_weather_2days_validWeather(self):
+        start = time.clock()
         answer = self.qa.ask('What will the weather be like in 2 days?')
-        time.sleep(6)
-        answer = self.qa.ask('What will the weather be like in 2 days?')
+        while answer == 'Forecasting...':
+            try:
+                answer = self.qa.ask('What will the weather be like in 2 days?')
+            except Exception:# Working this way will certainly raise exceptions
+                answer = 'Forecasting...'
+        elapsed = time.clock() - start
         self.assertIn(answer, pyTona.answer_funcs.WeatherPredictor.weatherTypes)
+        self.outputPerformanceNumber('test_predict_weather_2days_validWeather', elapsed)
 
     @requirements(['#0037', '#0039'])
     def test_predict_weather_2days_returnsForecasting(self):

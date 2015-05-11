@@ -6,12 +6,25 @@ from pyTona.answer_funcs import FibSeqFinder, WoodChuck
 from pyTona.question_answer import QA
 import uuid
 import time
+import os
 
 class TestPerformance(TestCase):
     def setUp(self):
         self.qa = Interface()
         self.testQ = 'Who was the most prolific classical composer?'
         self.testA = 'Wolfgang Amadeus Mozart'
+
+    def outputPerformanceNumber(self, function, results):
+        if not os.path.exists('results'):
+            os.mkdir('results')
+
+        outFile = os.path.join('results', '{0}.csv'.format(function))
+        exists = os.path.isfile(outFile)
+        with open(outFile, 'a') as f:
+            if (exists):
+                f.write(',{0}'.format(results))
+            else:
+                f.write('{0}'.format(results))
 
     @requirements(['#0030'])
     def test_minimum_qa(self):
@@ -23,7 +36,7 @@ class TestPerformance(TestCase):
             qa = QA(randomQuestion, randomAnswer)
             self.qa.question_answers[randomQuestion] = qa
         elapsed = time.clock() - start
-        pass
+        self.outputPerformanceNumber('test_minimum_qa', elapsed)
 
     @requirements(['#0031'])
     def test_answer_storage_speed(self):
