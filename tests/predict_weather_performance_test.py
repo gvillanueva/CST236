@@ -3,8 +3,6 @@ from unittest import TestCase
 from ReqTracer import requirements
 from pyTona.main import Interface
 import pyTona.answer_funcs
-from collections import Counter
-from mock import patch, Mock
 
 class TestPredictWeatherPerformance(TestCase):
     def setUp(self):

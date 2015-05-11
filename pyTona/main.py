@@ -1,5 +1,5 @@
 from pyTona.question_answer import QA
-from pyTona.answer_funcs import feet_to_miles, hal_20, get_git_branch, get_git_url, get_other_users, get_fibonacci_seq, chuck_wood, find_the_answer, predict_weather
+from pyTona.answer_funcs import feet_to_miles, hal_20, get_git_branch, get_git_url, get_other_users, get_fibonacci_seq, chuck_wood, find_the_answer, predict_weather, read_data
 
 import difflib
 NOT_A_QUESTION_RETURN = "Was that a question?"
@@ -29,8 +29,9 @@ class Interface(object):
             'Who else is here': QA('Who else is here', get_other_users),
             'What is the digit of the Fibonacci sequence': QA('What is the digit of the Fibonacci sequence', get_fibonacci_seq),
             'How much wood could a woodchuck chuck in seconds' : QA('How much wood could a woodchuck chuck in seconds', chuck_wood),
-            'What is the answer to the ultimate question of life, the universe, and everything?' : QA('What is the answer to the ultimate question of life, the universe, and everything?', find_the_answer),
-            'What will the weather be like in days?' : QA('What will the weather be like in days?', predict_weather)
+            'What is the answer to the ultimate question of life, the universe, and everything' : QA('What is the answer to the ultimate question of life, the universe, and everything', find_the_answer),
+            'What will the weather be like in days' : QA('What will the weather be like in days', predict_weather),
+            'What are the contents of data.txt' : QA('What are the contents of data.txt', read_data)
         }
         self.last_question = None
 

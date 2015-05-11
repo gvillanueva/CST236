@@ -118,5 +118,4 @@ NOTE: The above requirement is to keep prediction rates to a reasonable speed.
 
 NOTE: Assume python's random module will deliver sufficient randomness.
 
-#0050 The system shall read the contents of data.txt at 10 characters per second.
-
+#0050 The system shall read the contents of data.txt at a rate of at least 10 characters per second.

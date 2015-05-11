@@ -189,3 +189,12 @@ def predict_weather(days):
             predictors.append(wp)
             wp.start()
             return 'Forecasting...'
+
+def read_data():
+    readData = None
+    try:
+        with open('data.txt') as f:
+            readData = f.read()
+    except IOError:
+        return "Unknown"
+    return readData
