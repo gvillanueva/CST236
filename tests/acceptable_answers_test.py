@@ -216,11 +216,11 @@ class TestAcceptableAnswers(TestCase):
         self.assertEqual('IT\'S A TRAAAPPPP', answer)
 
     @requirements(['#0028'])
-    def test_ask_initialAnswer8_immediateResponse(self):
-        answer = self.qa.ask('What is the 1 digit of the Fibonacci sequence?')
+    def test_ask_initialAnswer8(self):
+        answer = self.qa.ask('What is the 3 digit of the Fibonacci sequence?')
         while answer in ['Thinking...', 'One second', 'cool your jets']:
-            answer = self.qa.ask('What is the 1000 digit of the Fibonacci sequence?')
-        self.assertEqual(1, answer)
+            answer = self.qa.ask('What is the 3 digit of the Fibonacci sequence?')
+        self.assertEqual(2, answer)
 
     @requirements(['#0029'])
     @patch('random.randint')
