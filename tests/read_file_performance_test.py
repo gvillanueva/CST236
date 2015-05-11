@@ -6,11 +6,14 @@ import pyTona.answer_funcs
 import os
 import string
 import random
+import multiprocessing
 import threading
 
 class TestReadDataPerformance(TestCase):
     def setUp(self):
         self.qa = Interface()
+        global stopEvent
+        stopEvent = threading.Event()
 
     def setUpDefaultData(self):
         with open('data.txt', 'w') as f:
@@ -64,7 +67,29 @@ class TestReadDataPerformance(TestCase):
     @requirements(['#0040', '#0050'])
     def test_read_data_10CharsPerSec_underStress(self):
         self.setUpBigRandomData()
-
+        simultaneousFiles = ['a.txt', 'b.txt', 'c.txt', 'd.txt', 'e.txt', 'f.txt', 'g.txt', 'h.txt', 'i.txt', 'j.txt']
+        pool = multiprocessing.Pool(10)# Create 10 simultaneous writers
+        r = pool.map_async(bigWrites, simultaneousFiles, 1)
+        try:
+            r.get(1)
+        except multiprocessing.TimeoutError:
+            pass
+        start = time.clock()
+        answer = self.qa.ask('What are the contents of data.txt?')
+        elapsed = time.clock() - start
+        perSec = len(answer) / elapsed
+        self.assertGreaterEqual(perSec, 10)
+        pool.close()        # Close
+        pool.terminate()    # The dang
+        pool.join()         # Jobs
+        global stopEvent    # Like
+        stopEvent.set()     # For real
+        pass
 
     def tearDown(self):
         self.deleteData()
+
+def bigWrites(file):
+    with open(file, 'w') as f:
+        while not stopEvent.isSet():
+            f.write(random.choice(string.lowercase))
