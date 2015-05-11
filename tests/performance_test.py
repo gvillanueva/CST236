@@ -4,8 +4,6 @@ from pyTona.main import Interface
 import pyTona.answer_funcs
 from pyTona.answer_funcs import FibSeqFinder, WoodChuck
 from pyTona.question_answer import QA
-import random
-import string
 import uuid
 import time
 
@@ -76,6 +74,29 @@ class TestPerformance(TestCase):
             answer = self.qa.ask('How much wood could a woodchuck chuck in 10 seconds?')
         self.assertEqual(answer, 10)
 
+    @requirements(['#0035', '#0041'])
+    def test_woodChuck_check_every_5secs(self):
+        answer = self.qa.ask('How much wood could a woodchuck chuck in 20 seconds?')
+        start = time.clock()
+        while answer == 'Busy chucking':
+            answer = self.qa.ask('How much wood could a woodchuck chuck in 20 seconds?')
+            elapsed = time.clock() - start
+            if elapsed % 5 == 0:
+                self.assertEqual(pyTona.answer_funcs.woodChuck.chuckedCords % 5, 0)
+        self.assertEqual(answer, 20)
+
+    @requirements([''])
+    def test_find_the_answer_returnsNone(self):
+        answer = self.qa.ask('What is the answer to the ultimate question of life, the universe, and everything?')
+        self.assertIsNone(answer)
+
+    @requirements([''])
+    def test_find_the_answer_wait7500000usecs(self):
+        self.qa.ask('What is the answer to the ultimate question of life, the universe, and everything?')
+        time.sleep(7.5)
+        answer = self.qa.ask('What is the answer to the ultimate question of life, the universe, and everything?')
+        self.assertEqual(answer, 42)
+
     def tearDown(self):
         if isinstance(pyTona.answer_funcs.seq_finder, FibSeqFinder):
             pyTona.answer_funcs.seq_finder.stop()
@@ -84,3 +105,11 @@ class TestPerformance(TestCase):
         if isinstance(pyTona.answer_funcs.woodChuck, WoodChuck):
             pyTona.answer_funcs.woodChuck.stop()
             pyTona.answer_funcs.woodChuck = None
+
+        if  pyTona.answer_funcs.t is not None:
+            pyTona.answer_funcs.t.cancel()
+            pyTona.answer_funcs.t = None
+
+        if len(pyTona.answer_funcs.predictors) > 0:
+            for wp in pyTona.answer_funcs.predictors:
+                wp.stop()

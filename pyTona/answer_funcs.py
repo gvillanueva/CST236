@@ -4,9 +4,12 @@ import socket
 import subprocess
 import threading
 import time
+import sys
 
 seq_finder = None
 woodChuck = None
+t = None
+predictors = []
 
 def feet_to_miles(feet):
     return "{0} miles".format(float(feet) / 5280)
@@ -102,7 +105,7 @@ class WoodChuck(threading.Thread):
             self.t.cancel()
 
     def run(self):
-        self.t = threading.Timer(10.0, self.stop)
+        self.t = threading.Timer(self.secs, self.stop)
         self.t.start()
         while not self._stopEvent.isSet():
             self.chuckedCords += 1
@@ -124,9 +127,65 @@ def chuck_wood(secs):
         return 'Busy chucking'
 
 def find_the_answer():
-    t = threading.Timer(7.5, the_answer)
-    t.start()
-    return None
+    global t
+    if t is None:
+        t = threading.Timer(7.5, the_answer)
+        t.start()
+
+    if t.isAlive():
+        return None
+    else:
+        return the_answer()
 
 def the_answer():
     return 42
+
+class WeatherPredictor(threading.Thread):
+    days = 0
+    weatherTypes = ['sunny', 'cloudy', 'partly cloudy', 'rainy', 'snowy', 'thunderstorms', 'hail']
+    forecast = []
+    lock = threading.RLock()
+
+    def __init__(self, days, *args, **kwargs):
+        super(WeatherPredictor, self).__init__(*args, **kwargs)
+        self.days = int(days)
+        self._stop = threading.Event()
+
+    def stop(self):
+        self._stop.set()
+
+    def run(self):
+        # while True:
+        #     pass
+        for i in xrange(self.days):
+            # Stop when asked nicely
+            if self._stop.isSet():
+                break
+
+            if len(WeatherPredictor.forecast) <= i:
+                time.sleep(.5)
+                # Acquire exclusive write access to the forecast cache
+                try:
+                    with WeatherPredictor.lock:
+                        # Double-check that another predictor hasn't beaten us to the punch
+                        if len(WeatherPredictor.forecast) <= i:
+                            WeatherPredictor.forecast.append(random.choice(WeatherPredictor.weatherTypes))
+                except:
+                    e = sys.exc_info()
+                    pass
+        global predictors
+        predictors.remove(self)
+
+def predict_weather(days):
+    # If weather prediction exists, return it
+    days = int(days)
+    if len(WeatherPredictor.forecast) >= days:
+        return WeatherPredictor.forecast[days - 1]
+    else:
+        if len(predictors) >= 3:
+            raise Exception("Too many predictors!")
+        else:
+            wp = WeatherPredictor(days)
+            predictors.append(wp)
+            wp.start()
+            return 'Forecasting...'

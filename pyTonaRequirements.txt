@@ -84,22 +84,39 @@ Username shall be determined by the name of the currently logged in user.
 
 #0035 The system shall respond to the question "How much wood could a woodchuck chuck in X seconds?" with results after the wood has been chucked
 
-#0036 The system shall respond to the question "What are the contents of data.txt?" with the contents on the local data.txt or "Unknown" if data.txt is missing
+#0036 The system shall respond to the question "What is the answer to the ultimate question of life, the universe, and everything?" with 42.
 
-#0037 The system shall respond to the question "What is the answer to the ultimate question of life, the universe, and everything?" with 42.
+#0037 The system shall respond to the question "What will the weather be like in X days?" with a weather prediction from the list of potential weathers.
 
-#0038 The system shall respond to the question "What is "
+#0038 The system's list of potential weathers shall consist of 'sunny', 'cloudy', 'partly cloudy', 'rainy', 'snowy', 'thunderstorms', and 'hail'.
+
+#0039 The system shall return 'Forecasting...' if the prediction needs time to be calculated.
+
+#0040 The system shall respond to the question "What are the contents of data.txt?" with the contents of the local data.txt or "Unknown" if data.txt is missing
 
 **New performance requirements 5/10/2015**
 
-#0039 The system shall respond "Busy chucking" while the woodchuck has not completed its requested woodchuck run.
+#0041 The system shall respond "Busy chucking" while the woodchuck has not completed its requested woodchuck run.
 
-#0040 The system's woodchuck shall chuck wood at a rate of 1 cord per second, beginning with the first chuck.
+#0042 The system's woodchuck shall chuck wood at a rate of 1 cord per second, beginning with the first chuck.
 
-#0041 The system's woodchuck shall never grow tired, so the rate should be constant.
+#0043 The system's woodchuck shall never grow tired, so the rate should be constant.
 
-#0042 The system shall read the contents of data.txt at 10 characters per second.
+#0044 The system shall respond with None while considering the answer to #0037.
 
-#00   The system shall respond with None while considering the answer to #0037.
+#0045 The system shall require 7.5 million microseconds to calculate the answer to #0037.
 
-#00   The system shall require 7.5 million microseconds to calculate the answer to #0037.
+#0046 The system shall require no longer than 3 seconds to predict a day's worth of weather.
+
+#0047 The system shall raise an exception if a new weather predictor would create more than 4 simultaneous weather predictors.
+
+NOTE: The above requirement is to keep prediction rates to a reasonable speed.
+
+#0048 The system shall cache weather predictions to speed up repeated requests.
+
+#0049 True to realistic weather predictions, the forecast shall be a completely random, but consistent within a runtime.
+
+NOTE: Assume python's random module will deliver sufficient randomness.
+
+#0050 The system shall read the contents of data.txt at 10 characters per second.
+
