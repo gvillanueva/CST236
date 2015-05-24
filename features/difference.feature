@@ -3,7 +3,8 @@ Feature: Show speed difference
     I want to see the difference in time between the network and the hard drive
 
 Scenario: Calculation completed
-
-Scenario: Calculation not completed
-
-Scenario: Invalid data provided
+  Given the city of Salem
+    And a network speed of 100 MBps
+    And a hard drive size of 10 MB
+   When time difference is calculated
+   Then return -2215.28461538461
