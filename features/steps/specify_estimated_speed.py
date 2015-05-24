@@ -1,31 +1,31 @@
 from behave import *
 from source.speed_researcher import SpeedResearcher
 
-@given('a speed between 0 and 100,000 MBps')
+@given('a speed between 0 and 200 MPH')
 def step_impl(context):
-    context.net_speed = 25.5
+    context.driving_speed = 25.5
 
-@given('a speed greater than 100,000 MBps')
+@given('a speed greater than 200 MPH')
 def step_impl(context):
-    context.net_speed = 100000.01
+    context.driving_speed = 100000.01
 
-@given('a speed less than 0 MBps')
+@given('a speed less than 0 MPH')
 def step_impl(context):
-    context.net_speed = -0.01
+    context.driving_speed = -0.01
 
-@given('a speed of \'One hundred MBps\'')
+@given('a speed of \'One hundred MPH\'')
 def step_impl(context):
-    context.net_speed = 'One hundred MBps'
+    context.driving_speed = 'One hundred MPH'
 
 @when('setting speed')
 def step_impl(context):
     context.system = SpeedResearcher()
-    context.system.net_speed = context.net_speed
+    context.system.driving_speed = context.driving_speed
 
 @then('change the speed setting')
 def step_impl(context):
-    assert context.system.net_speed == context.net_speed
+    assert context.system.driving_speed == context.driving_speed
 
 @then('do not change the speed setting')
 def step_impl(context):
-    assert context.system.net_speed == 0
+    assert context.system.driving_speed == 0

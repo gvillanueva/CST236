@@ -9,26 +9,26 @@ class SpeedResearcher(object):
     """Instantiates a new SpeedResearcher object.
     """
     def __init__(self):
-        self._net_speed = 0
+        self._driving_speed= 0
         self._hdd_size = 0
         self._distance = 0
 
-    """Gets the value of the estimated network speed.
-    :return: The estimated network speed.
+    """Gets the value of the estimated driving speed.
+    :return: The estimated driving speed.
     :rtype: float
     """
     @property
-    def net_speed(self):
-        return self._net_speed
+    def driving_speed(self):
+        return self._driving_speed
 
-    """Sets the value of the estimated network speed.
-    :param value: The desired value of the network speed estimate.
+    """Sets the value of the estimated driving speed.
+    :param value: The desired value of the driving speed estimate.
     :type value: float
     """
-    @net_speed.setter
-    def net_speed(self, value):
+    @driving_speed.setter
+    def driving_speed(self, value):
         if isinstance(value, (float, int)) and 0 <= value <= 100000:
-            self._net_speed = value
+            self._driving_speed = value
 
     """Gets the value of the hard drive size.
     :return: The hard drive size.
