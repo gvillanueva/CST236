@@ -13,6 +13,7 @@ class SpeedResearcher(object):
         self._net_speed = 0.0
         self._hdd_size = 0.0
         self._distance = 0.0
+        self._cities = {'Salem': 40}
 
     """Gets the value of the estimated driving speed.
     :return: The estimated driving speed.
@@ -30,6 +31,14 @@ class SpeedResearcher(object):
     def driving_speed(self, value):
         if isinstance(value, (float, int)) and 0 <= value <= 100000:
             self._driving_speed = float(value)
+        elif value == 'Porsche':
+            self._driving_speed = 200
+        elif value == 'Bus':
+            self._driving_speed = 65
+        elif value == 'Cement Truck':
+            self._driving_speed = 45
+        elif value == 'Laden Swallow':
+            self._driving_speed = 24
 
     """Gets the value of the estimated driving speed.
     :return: The estimated driving speed.
@@ -77,9 +86,33 @@ class SpeedResearcher(object):
     :param value: The city name used to lookup distance.
     :type value: string
     """
-    def setCity(self, value):
-        if isinstance(value, str) and value == 'Salem':
-            self._distance = float(40)
+    def setCity(self, name):
+        if isinstance(name, str) and name in self._cities:
+            self._distance = float(self._cities[name])
+
+    """Creates a new city with the given values for name and distance
+    :param name: The city name associated with distance.
+    :type name: string
+    :param distance: The distance to the city, in miles.
+    :type distance: float
+    :return: False if the city is not added
+    :rtype: bool
+    """
+    def addCity(self, name, distance):
+        if not isinstance(name, str):
+            return False
+        if name not in self._cities:
+            self._cities[name] = distance
+        else:
+            return False
+
+    """Gets the list of cities in the research system's city file
+    :return: List of cities in the city file
+    :rtype: list
+    """
+    @property
+    def cities(self):
+        return self._cities.keys()
 
     """Calculates the network speed (MBps) equivalent of driving
     :return: The MBps speed of driving
