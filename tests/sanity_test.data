@@ -1,0 +1,3 @@
+QA={'question':'What is the answer to life, the universe, and everything?','answer':42}
+feet_to_miles={'feet':5280}
+get_fibonacci_seq={'index':1}
