@@ -8,12 +8,19 @@ system.
 class SpeedResearcher(object):
     """Instantiates a new SpeedResearcher object.
     """
-    def __init__(self):
+    def __init__(self, starting_city='Portland'):
         self._driving_speed = 0.0
         self._net_speed = 0.0
         self._hdd_size = 0.0
         self._distance = 0.0
-        self._cities = {'Salem': 40}
+        self._cities = {'Salem': 40, 'Portland': 55, 'Sherwood': 17.7, 'Woodburn': 32.1, 'Canby': 26.1}
+        self._route = None
+        self._network_latency = 0
+        self._hdd_speed = 1
+        if isinstance(starting_city, str) and starting_city in self._cities:
+            self._starting_city = starting_city
+        else:
+            raise ValueError
 
     """Gets the value of the estimated driving speed.
     :return: The estimated driving speed.
@@ -114,6 +121,46 @@ class SpeedResearcher(object):
     def cities(self):
         return self._cities.keys()
 
+    """Gets the value of the network latency compensation
+    :return: Value of network latency
+    :rtype: int
+    """
+    @property
+    def network_latency(self):
+        return self._network_latency
+
+    """Sets the value of the network latency compensation
+    :param value: Potential new value for network latency
+    :type value: int
+    :raises ValueError: network_latency raises ValueError if value is not an int.
+    """
+    @network_latency.setter
+    def network_latency(self, value):
+        if not isinstance(value, int):
+            raise ValueError
+        if 0 <= value <= 100000:
+            self._network_latency = value
+
+    """Gets the value of the hard drive speed
+    :return: Speed of the hard drive in GBps
+    :rtype: int
+    """
+    @property
+    def hdd_speed(self):
+        return self._hdd_speed
+
+    """Sets the value of the hard drive speed
+    :param value: Potential new value for hard drive speed
+    :type value: int
+    :raises ValueError: hdd_speed raises ValueError if value is not an int or value is not in 1 - 1000.
+    """
+    @hdd_speed.setter
+    def hdd_speed(self, value):
+        if isinstance(value, int) and 0 < value <= 1000:
+            self._hdd_speed = value
+        else:
+            raise ValueError
+
     """Calculates the network speed (MBps) equivalent of driving
     :return: The MBps speed of driving
     :rtype: float
@@ -140,3 +187,27 @@ class SpeedResearcher(object):
     def calcTimeDifference(self):
         drivingMBps = self.calcDrivingMBps()
         return (self._hdd_size / self._net_speed) - (self.hdd_size / drivingMBps)
+
+    """Sets the route to use when running the speed test.
+    :param route: A list of cities to use as the speed test route
+    :type route: list
+    :return: True if the route is accepted, otherwise False.
+    :rtype: bool
+    """
+    def setRoute(self, route):
+        # Ensure route contains 1 - 10 cities
+        if not 1 <= len(route) <= 10:
+            return False
+
+        # Ensure all cities in route exist
+        for city in route:
+            if city not in self._cities:
+                return False
+
+        # Ensure adjacent cities are not the same
+        for x in xrange(0, len(route) - 1):
+            if route[x] == route[x+1]:
+                return False
+
+        self._route = route
+        return True
